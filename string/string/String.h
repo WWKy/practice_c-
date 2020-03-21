@@ -39,7 +39,7 @@ String::String(const String& s)
 
 String& String::operator=(const String& s)
 {
-	if (this == &s)	// 防止sb自赋值
+	if (this == &s)	// 防止傻傻的自赋值操作
 		return *this;
 
 	delete[] data;
