@@ -31,87 +31,79 @@ public:
 	int length() const { return strlen(data); };
 	char* getData() const { return data; };
 private:
+	static char* copyString(const char*);
+	static char* copyEmptyString();
 	static char* plusCore(const char*, const char*);
 	static char* mutipleCore(const char*, int);
+
 	char* data;
 };
 
-inline String::String(const char* c)
+inline String::String(const char* c_str)
 {
-	if (c == nullptr)
-	{
-		data = new char[1];
-		data[0] = '\0';
-	}
-	else
-	{
-		data = new char[strlen(c) + 1]; // 预留给'\0'
-		strcpy(data, c);				// strcpy会复制'\0'
-	}
+	data = c_str ? copyString(c_str) : copyEmptyString();
 }
 
-inline String::String(const String& s)
+inline String::String(const String& str)
 {
-	data = new char[s.length() + 1];
-	strcpy(data, s.data);
+	data = copyString(str.data);
 }
 
-inline String& String::operator=(const char* c)
+inline String& String::operator=(const char* right)
 {
 	delete[] data;
-	data = new char[strlen(c) + 1];
-	strcpy(data, c);
+	data = copyString(right);
 	return *this;
 }
 
-inline String& String::operator=(const String& s)
+inline String& String::operator=(const String& right)
 {
-	if (this == &s)				// 防止傻傻的自赋值操作
+	if (this == &right)				// 防止傻傻的自赋值操作
 		return *this;
-	return operator=(s.data);
+	return operator=(right.data);
 }
 
-inline bool String::operator==(const char* r) const
+inline bool String::operator==(const char* right) const
 {
-	return strcmp(data, r) == 0 ? true : false;
+	return strcmp(data, right) == 0 ? true : false;
 }
 
-inline bool String::operator!=(const char* r) const
+inline bool String::operator!=(const char* right) const
 {
-	return strcmp(data, r) != 0 ? true : false;
+	return strcmp(data, right) != 0 ? true : false;
 }
 
-inline bool String::operator==(const String& r) const
+inline bool String::operator==(const String& right) const
 {
-	return operator==(r.data);
+	return operator==(right.data);
 }
 
-inline bool String::operator!=(const String & r) const
+inline bool String::operator!=(const String & right) const
 {
-	return operator!=(r.data);
+	return operator!=(right.data);
 }
 
-inline String String::operator+(const char* c) const
+inline String String::operator+(const char* right) const
 {
-	return String(plusCore(data, c));
+	return String(plusCore(data, right));
 }
 
-inline String String::operator+(const String& r) const
+inline String String::operator+(const String& right) const
 {
-	return operator+(r.data);
+	return operator+(right.data);
 }
 
-inline String & String::operator+=(const char* r)
+inline String & String::operator+=(const char* right)
 {
-	char* new_c = plusCore(data, r);
+	char* new_c = plusCore(data, right);
 	delete[] data;
 	data = new_c;
 	return *this;
 }
 
-inline String& String::operator+=(const String& r)
+inline String& String::operator+=(const String& right)
 {
-	return operator+=(r.data);
+	return operator+=(right.data);
 }
 
 inline String String::operator*(int n) const
@@ -127,6 +119,20 @@ inline String& String::operator*=(int n)
 	return *this;
 }
 
+inline char* String::copyString(const char *c_str)
+{
+	char* new_c = new char[strlen(c_str) + 1];	// +1预留给'\0'
+	strcpy(new_c, c_str);						// strcpy会复制'\0'
+	return new_c;
+}
+
+inline char* String::copyEmptyString()
+{
+	char* new_c = new char[1];
+	new_c[0] = '\0';
+	return new_c;
+}
+
 inline char* String::plusCore(const char* left, const char *right)
 {
 	char* new_c = new char[strlen(left) + strlen(right) + 1];
@@ -135,26 +141,24 @@ inline char* String::plusCore(const char* left, const char *right)
 	return new_c;
 }
 
-inline char* String::mutipleCore(const char* c, int n)
+inline char* String::mutipleCore(const char* c_str, int n)
 {
 	char *new_c;
 	if (n == 0)
 	{
-		new_c = new char[1];
-		new_c[0] = '\0';
+		new_c = copyEmptyString();
 	}
 	else if (n == 1)
 	{
-		new_c = new char[strlen(c)+1];
-		strcpy(new_c, c);
+		new_c = copyString(c_str);
 	}
 	else
 	{
-		int len = strlen(c);
+		int len = strlen(c_str);
 		new_c = new char[len*n + 1];
-		for (int i = 0; i < n; i++) 
+		for (int i = 0; i < n; i++)
 		{
-			strcpy(new_c+i*len, c);
+			strcpy(new_c + i*len, c_str);
 		}
 	}
 	return new_c;
