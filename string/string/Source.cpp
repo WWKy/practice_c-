@@ -30,11 +30,6 @@ int main()
 	system("pause");
 }
 
-// 单元测试
-// 1.正确情况
-// 2.边界值
-// 3.错误情况
-
 void testConstructor()
 {
 	cout << "testConstructor\t\t";
