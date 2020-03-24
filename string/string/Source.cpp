@@ -12,7 +12,7 @@ void testAssigment();
 void testPlus();
 void testSelfPlus();
 void testMultiple();
-//void tesSelftMultiple();
+void testSelfMultiple();
 
 #define DEFINE_STRINGS String s1(nullptr);String s2("");String s3;String s4("a");String s5("hello");
 
@@ -25,6 +25,7 @@ int main()
 	testPlus();
 	testSelfPlus();
 	testMultiple();
+	testSelfMultiple();
 
 	system("pause");
 }
@@ -36,7 +37,7 @@ int main()
 
 void testConstructor()
 {
-	cout << "testConstructor\t";
+	cout << "testConstructor\t\t";
 	DEFINE_STRINGS;
 
 	assert(strcmp(s1.getData(), "") == 0);
@@ -51,7 +52,7 @@ void testConstructor()
 
 void testEqual()
 {
-	cout << "testEqual\t";
+	cout << "testEqual\t\t";
 	DEFINE_STRINGS;
 
 	assert(s1 == s1);
@@ -93,7 +94,7 @@ void testCopyConstructor()
 
 void testAssigment()
 {
-	cout << "testAssigment\t";
+	cout << "testAssigment\t\t";
 	DEFINE_STRINGS;
 
 	s1 = s5;
@@ -113,7 +114,7 @@ void testAssigment()
 
 void testPlus()
 {
-	cout << "testPlus\t";
+	cout << "testPlus\t\t";
 	DEFINE_STRINGS;
 
 	assert(s1 + s2 == String(""));
@@ -135,7 +136,7 @@ void testPlus()
 
 void testSelfPlus()
 {
-	cout << "testSelfPlus\t";
+	cout << "testSelfPlus\t\t";
 	DEFINE_STRINGS;
 
 	s1 += s1;
@@ -155,7 +156,7 @@ void testSelfPlus()
 
 void testMultiple()
 {
-	cout << "testMultiple\t";
+	cout << "testMultiple\t\t";
 	DEFINE_STRINGS;
 
 	assert(s1 * 0 == "");
@@ -169,6 +170,35 @@ void testMultiple()
 	assert(s5 * 2 == "hellohello");
 	assert(s5 * 3 == "hellohellohello");
 	assert(String(" ") * 2 == "  ");
+
+	cout << "Pass!" << endl;
+}
+
+void testSelfMultiple()
+{
+	cout << "testSelfMultiple\t";
+	DEFINE_STRINGS;
+
+	s1 *= 0;
+	assert(s1 == "");
+	s1 *= 1;
+	assert(s1 == "");
+	s1 *= 2;
+	assert(s1 == "");
+
+	s4 *= 1;
+	assert(s4 == "a");
+	s4 *= 2;
+	assert(s4 == "aa");
+	s4 *= 0;
+	assert(s4 == "");
+
+	s5 *= 1;
+	assert(s5 == "hello");
+	s5 *= 2;
+	assert(s5 == "hellohello");
+	s5 *= 0;
+	assert(s5 == "");
 
 	cout << "Pass!" << endl;
 }
